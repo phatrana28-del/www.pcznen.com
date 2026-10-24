@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC ZONE | Digital Store</title>
+<style>
+:root {
+  --red: #ff2638;
+  --bg: #090909;
+  --card: #171717;
+  --text: #f7f7f7;
+  --muted: #aaa;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #111;
+  border-bottom: 1px solid #333;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--red);
+}
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.primary { background: var(--red); color: white; }
+.secondary { background: #292929; color: white; }
+.container { max-width: 1000px; margin: auto; padding: 18px; }
+.hero {
+  padding: 32px 20px;
+  border: 1px solid #392024;
+  border-radius: 18px;
+  background: linear-gradient(135deg,#241014,#111 65%);
+}
+.hero h1 { font-size: 32px; margin: 0 0 12px; }
+.hero h1 span { color: var(--red); }
+.hero p { color: #ccc; line-height: 1.7; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px;
+  margin: 15px 0 25px;
+}
+.stat {
+  background: var(--card);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #292929;
+}
+.stat strong { color: var(--red); font-size: 21px; display:block; }
+h2 { font-size: 21px; margin-top: 28px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(145px,1fr));
+  gap: 13px;
+}
+.product {
+  background: var(--card);
+  border: 1px solid #2d2d2d;
+  border-radius: 13px;
+  overflow: hidden;
+}
+.product img {
+  width: 100%;
+  height: 145px;
+  object-fit: cover;
+  background: #222;
+}
+.product-content { padding: 12px; }
+.product h3 { font-size: 16px; margin: 0 0 8px; }
+.product p { color: var(--muted); font-size: 13px; min-height: 32px; }
+.price { color: var(--red); font-weight: 900; margin: 10px 0; }
+.product button { width: 100%; }
+.panel {
+  background: var(--card);
+  border: 1px solid #292929;
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 15px;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #0e0e0e;
+  color: white;
+}
+label { font-size: 13px; color: #ccc; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.row button { flex: 1; }
+.hidden { display: none !important; }
+.item {
+  padding: 12px 0;
+  border-bottom: 1px solid #333;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.notice {
+  padding: 12px;
+  border-radius: 9px;
+  background: #231316;
+  color: #ffb5bc;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+footer {
+  padding: 25px 15px;
+  text-align: center;
+  color: #888;
+  border-top: 1px solid #292929;
+  margin-top: 30px;
+}
+a { color: #ff6875; }
+@media(min-width:650px) {
+  .stats { grid-template-columns: repeat(4,1fr); }
+  .hero h1 { font-size: 42px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⬢ PC ZONE</div>
+  <button class="primary" onclick="showAccount()">สมาชิก</button>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <h1>WELCOME TO <span>PC ZONE</span></h1>
+    <p>ร้านค้าดิจิทัลสำหรับเกมเมอร์ เลือกสินค้า ตรวจสอบราคา และดูประวัติรายการของคุณได้ในที่เดียว</p>
+    <button class="primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">เลือกซื้อสินค้า</button>
+  </section>
+
+  <section class="stats">
+    <div class="stat">สินค้า<strong id="productCount">4</strong></div>
+    <div class="stat">เครดิตทดลอง<strong id="wallet">300</strong></div>
+    <div class="stat">รายการซื้อ<strong id="orderCount">0</strong></div>
+    <div class="stat">สถานะ<strong>ออนไลน์</strong></div>
+  </section>
+
+  <section id="account" class="panel hidden">
+    <h2>👤 บัญชีสมาชิก</h2>
+    <div id="authForm">
+      <label>อีเมล</label>
+      <input id="email" type="email" placeholder="กรอกอีเมล">
+      <label>รหัสผ่าน</label>
+      <input id="password" type="password" placeholder="อย่างน้อย 6 ตัวอักษร">
+      <div class="row">
+        <button class="primary" onclick="register()">สมัครสมาชิก</button>
+        <button class="secondary" onclick="login()">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+    <div id="userInfo" class="hidden">
+      <p>เข้าสู่ระบบแล้ว: <strong id="userEmail"></strong></p>
+      <button class="secondary" onclick="logout()">ออกจากระบบ</button>
+    </div>
+    <div class="notice">
+      เวอร์ชันทดลองนี้เก็บบัญชีไว้ในเบราว์เซอร์ของอุปกรณ์นี้เท่านั้น ไม่ใช่ระบบสมาชิกออนไลน์ที่ปลอดภัย
+    </div>
+  </section>
+
+  <section id="shop">
+    <h2>🔥 สินค้าแนะนำ</h2>
+    <div id="products" class="products"></div>
+  </section>
+
+  <section class="panel">
+    <h2>📦 ประวัติการซื้อ</h2>
+    <div id="orders"><p style="color:#aaa">ยังไม่มีรายการซื้อ</p></div>
+  </section>
+
+  <section class="panel">
+    <h2>📞 ติดต่อร้าน</h2>
+    <p>Instagram: <a href="https://www.instagram.com/taweiopp__17/" target="_blank" rel="noopener">@taweiopp__17</a></p>
+    <p>Discord: <a href="https://discord.gg/QJJSaAyz" target="_blank" rel="noopener">เข้าร่วม Discord</a></p>
+    <p>YouTube: <a href="https://www.youtube.com/@taweiopp__17" target="_blank" rel="noopener">@taweiopp__17</a></p>
+  </section>
+
+  <section id="admin" class="panel">
+    <h2>🛠️ จัดการสินค้าในอุปกรณ์นี้</h2>
+    <div class="notice">
+      ส่วนนี้เป็นเครื่องมือทดลองที่แก้ข้อมูลในเบราว์เซอร์ของคุณเท่านั้น ไม่ใช่ระบบแอดมินที่ปลอดภัยและไม่ควรใช้เก็บคีย์สินค้าจริง
+    </div>
+    <label>ชื่อสินค้า</label>
+    <input id="newName" placeholder="ชื่อสินค้า">
+    <label>รายละเอียด</label>
+    <textarea id="newDesc" placeholder="รายละเอียดสินค้า"></textarea>
+    <label>ราคาเครดิตทดลอง</label>
+    <input id="newPrice" type="number" min="0" placeholder="เช่น 50">
+    <label>ลิงก์รูปภาพ (ถ้ามี)</label>
+    <input id="newImage" placeholder="https://...">
+    <button class="primary" onclick="addProduct()">เพิ่มสินค้า</button>
+  </section>
+</main>
+
+<footer>© 2026 PC ZONE · Digital Store</footer>
+
+<script>
+const DEFAULT_PRODUCTS = [
+  {id:1,name:"แพ็กเกจเริ่มต้น",desc:"สินค้าตัวอย่างสำหรับทดสอบระบบ",price:50,image:""},
+  {id:2,name:"แพ็กเกจมาตรฐาน",desc:"สินค้าตัวอย่างสำหรับทดสอบระบบ",price:100,image:""},
+  {id:3,name:"แพ็กเกจพรีเมียม",desc:"สินค้าตัวอย่างสำหรับทดสอบระบบ",price:150,image:""},
+  {id:4,name:"แพ็กเกจพิเศษ",desc:"สินค้าตัวอย่างสำหรับทดสอบระบบ",price:200,image:""}
+];
+
+let products = load("pcz_products", DEFAULT_PRODUCTS);
+let orders = load("pcz_orders", []);
+let credits = Number(localStorage.getItem("pcz_credits") || 300);
+let currentUser = localStorage.getItem("pcz_user") || "";
+
+function load(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+function save() {
+  localStorage.setItem("pcz_products", JSON.stringify(products));
+  localStorage.setItem("pcz_orders", JSON.stringify(orders));
+  localStorage.setItem("pcz_credits", String(credits));
+}
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function renderProducts() {
+  document.getElementById("products").innerHTML = products.map(p => `
+    <article class="product">
+      <img src="${escapeHTML(p.image || "https://placehold.co/400x300/171717/ff2638?text=PC+ZONE")}" alt="รูปสินค้า">
+      <div class="product-content">
+        <h3>${escapeHTML(p.name)}</h3>
+        <p>${escapeHTML(p.desc)}</p>
+        <div class="price">${Number(p.price)} เครดิต</div>
+        <button class="primary" onclick="buyProduct(${Number(p.id)})">ซื้อสินค้า</button>
+      </div>
+    </article>
+  `).join("");
+  document.getElementById("productCount").textContent = products.length;
+  document.getElementById("wallet").textContent = credits;
+  document.getElementById("orderCount").textContent = orders.length;
+}
+function renderOrders() {
+  const el = document.getElementById("orders");
+  if (!orders.length) {
+    el.innerHTML = '<p style="color:#aaa">ยังไม่มีรายการซื้อ</p>';
+    return;
+  }
+  el.innerHTML = orders.slice().reverse().map(o => `
+    <div class="item">
+      <strong>${escapeHTML(o.name)}</strong><br>
+      ราคา ${o.price} เครดิต<br>
+      วันที่ ${escapeHTML(o.date)}<br>
+      สถานะ: ${escapeHTML(o.status)}
+    </div>
+  `).join("");
+}
+function showAccount() {
+  document.getElementById("account").classList.toggle("hidden");
+}
+function register() {
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
+  if (!email || password.length < 6) {
+    alert("กรอกอีเมลและรหัสผ่านอย่างน้อย 6 ตัวอักษร");
+    return;
+  }
+  const users = load("pcz_demo_users", {});
+  if (users[email]) {
+    alert("อีเมลนี้สมัครแล้ว");
+    return;
+  }
+  users[email] = {password};
+  localStorage.setItem("pcz_demo_users", JSON.stringify(users));
+  currentUser = email;
+  localStorage.setItem("pcz_user", email);
+  updateUser();
+  alert("สมัครสมาชิกทดลองสำเร็จ");
+}
+function login() {
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
+  const users = load("pcz_demo_users", {});
+  if (!users[email] || users[email].password !== password) {
+    alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+    return;
+  }
+  currentUser = email;
+  localStorage.setItem("pcz_user", email);
+  updateUser();
+  alert("เข้าสู่ระบบทดลองสำเร็จ");
+}
+function logout() {
+  currentUser = "";
+  localStorage.removeItem("pcz_user");
+  updateUser();
+}
+function updateUser() {
+  document.getElementById("authForm").classList.toggle("hidden", !!currentUser);
+  document.getElementById("userInfo").classList.toggle("hidden", !currentUser);
+  document.getElementById("userEmail").textContent = currentUser;
+}
+function buyProduct(id) {
+  if (!currentUser) {
+    alert("กรุณาเข้าสู่ระบบก่อนซื้อสินค้า");
+    showAccount();
+    return;
+  }
+  const p = products.find(x => Number(x.id) === Number(id));
+  if (!p) return;
+  if (!confirm("ต้องการซื้อ " + p.name + " ราคา " + p.price + " เครดิตทดลองหรือไม่?")) return;
+  if (credits < Number(p.price)) {
+    alert("เครดิตทดลองไม่เพียงพอ");
+    return;
+  }
+  credits -= Number(p.price);
+  orders.push({
+    name:p.name,
+    price:Number(p.price),
+    date:new Date().toLocaleString("th-TH"),
+    status:"ซื้อสำเร็จ (รายการทดลอง)"
+  });
+  save();
+  renderProducts();
+  renderOrders();
+  alert("ซื้อสำเร็จ! นี่เป็นรายการทดลอง ยังไม่มีการส่งสินค้าจริง");
+}
+function addProduct() {
+  const name = document.getElementById("newName").value.trim();
+  const desc = document.getElementById("newDesc").value.trim();
+  const price = Number(document.getElementById("newPrice").value);
+  const image = document.getElementById("newImage").value.trim();
+  if (!name || !Number.isFinite(price) || price < 0) {
+    alert("กรอกชื่อสินค้าและราคาที่ถูกต้อง");
+    return;
+  }
+  products.push({id:Date.now(),name,desc,price,image});
+  save();
+  renderProducts();
+  document.getElementById("newName").value = "";
+  document.getElementById("newDesc").value = "";
+  document.getElementById("newPrice").value = "";
+  document.getElementById("newImage").value = "";
+  alert("เพิ่มสินค้าในเบราว์เซอร์นี้แล้ว");
+}
+renderProducts();
+renderOrders();
+updateUser();
+</script>
+</body>
+</html>
